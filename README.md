@@ -10,6 +10,10 @@ This neuron allow you to:
 
 >**Note:** The [MMM-kalliope](https://github.com/kalliope-project/MMM-kalliope) module need to be installed on your Magic Mirror
 
+![Demo](images/kalliope_neuron_magic_mirror_demo.gif)
+
+[Video demo with sound here](https://youtu.be/QHwctPbJ2ZY)
+
 ## Installation
 ```bash
 kalliope install --git-url https://github.com/kalliope-project/kalliope_neuron_magic_mirror.git
@@ -66,7 +70,7 @@ From Kalliope v0.5.1, you can send each spoken message to the mirror by using th
 
 First, create a hook in your settings.
 ```yml
-hooks:  
+hooks:
   on_start_speaking: "mm-say"
 ```
 
