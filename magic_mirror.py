@@ -30,25 +30,31 @@ class Magic_mirror(NeuronModule):
             }
 
             logger.debug(self.neuron_name + " call Magic Mirror MMM-kalliope-API: %s" % self.mm_url)
-            r = requests.post(url=self.mm_url, data=self.parameters)
 
-            self.status_code = r.status_code
-            self.content = r.content
-            # we try to load into a json object the content. So Kalliope can use it to talk
+            r = None
             try:
-                self.content = json.loads(self.content.decode())
-            except ValueError:
-                logger.debug(self.neuron_name + "cannot get a valid json from returned content")
-                pass
-            self.response_header = r.headers
+                r = requests.post(url=self.mm_url, data=self.parameters)
+            except requests.ConnectionError:
+                logger.debug(self.neuron_name + " Error, MM URL connection error: %s" % self.mm_url)
 
-            message = {
-                "status_code": self.status_code,
-                "content": self.content,
-                "response_header": self.response_header
-            }
+            if r is not None:
+                self.status_code = r.status_code
+                self.content = r.content
+                # we try to load into a json object the content. So Kalliope can use it to talk
+                try:
+                    self.content = json.loads(self.content.decode())
+                except ValueError:
+                    logger.debug(self.neuron_name + "cannot get a valid json from returned content")
+                    pass
+                self.response_header = r.headers
 
-            self.say(message)
+                message = {
+                    "status_code": self.status_code,
+                    "content": self.content,
+                    "response_header": self.response_header
+                }
+
+                self.say(message)
 
     def _is_parameters_ok(self):
 
